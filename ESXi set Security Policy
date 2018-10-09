@@ -1,7 +1,7 @@
-foreach ($VMHost in (Get-VMHost)) {
-    foreach ($vSwitch in ($VMHost | Get-VirtualSwitch) ) {
-        Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -MacChanges $false 
-        Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -AllowPromiscuous $false
-        Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmits $false
+#Add clustername to 'XXXXX' 
+foreach ($VMHost in get-cluster S609693LO6_CL01 | Get-VMHost){
+    foreach ($vSwitch in $VMHost) {
+        write-host $VMHost.Name
+        Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -MacChanges $false -AllowPromiscuous $false -ForgedTransmits $false       
     }
 }
