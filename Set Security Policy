@@ -1,0 +1,7 @@
+foreach ($VMHost in (Get-VMHost)) {
+    foreach ($vSwitch in ($VMHost | Get-VirtualSwitch) ) {
+        Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -MacChanges $false 
+        Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -AllowPromiscuous $false
+        Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmits $false
+    }
+}
