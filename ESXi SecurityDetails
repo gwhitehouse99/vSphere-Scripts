@@ -1,0 +1,9 @@
+foreach ($VMHost in Get-VMHost){
+     foreach($vSwitch in $VMHost.ExtensionData.Config.Network.Vswitch){
+          Write-Host $vSwitch.Name
+          write-host $VMHost.Name
+          Write-Host "Promiscuous mode:" $vSwitch.Spec.Policy.Security.AllowPromiscuous
+          Write-Host "Forged transmits:" $vSwitch.Spec.Policy.Security.ForgedTransmits
+          Write-Host "MAC Changes:" $vSwitch.Spec.Policy.Security.MacChanges       
+          }
+     }
