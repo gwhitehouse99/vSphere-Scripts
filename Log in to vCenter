@@ -1,0 +1,10 @@
+#Enter your vCenter Server below
+$vcenter = "s609693lo6vc01.na.msmps.net"
+
+## Get login credentials
+Write-Host -ForegroundColor Green "Please enter your vCenter login credentials. You may have to specify the domain prior to your name, as in domainname\user.name."
+$creds = Get-Credential
+
+#Connect to the vCenter server defined above. 
+Connect-VIServer $vcenter -credential $creds -warningaction:silentlycontinue
+Write-Host -ForegroundColor Green "Successfully connected to $($vcenter)"
