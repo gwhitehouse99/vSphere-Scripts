@@ -1,0 +1,33 @@
+Add-PsSnapin VMware.VimAutomation.Core -ea "SilentlyContinue"
+#ESXi Server IP Address
+$ESXiHost = "10.86.69.206"
+#VMKernel IP Address
+$VMKIP = "10.86.69.207"
+#VMKernel Subnet Mask
+$VMKSUB = "255.255.224.0"
+Connect-VIServer -Server $ESXiHost -User root -Password yrGCM7vPu
+#Add vmnic3ic2 to vSwitch0
+Get-VirtualSwitch -Name vSwitch0 | Add-VirtualSwitchPhysicalNetworkAdapter -VMHostPhysicalNic (Get-VMHostNetworkAdapter -Physical -Name "vmnic2")
+#Add VMKernel Port to vSwitch0
+New-VMHostNetworkAdapter -VMHost $ESXiHost -PortGroup VMKernel -VirtualSwitch vSwitch0 -IP $VMKIP -SubnetMask $VMKSUB -VMotionEnabled:$true
+#Set VMKernel vmnic failover order
+Get-VMHost $ESXiHost | Get-VirtualPortGroup -Name VMKernel | Get-NicTeamingPolicy | Set-NicTeamingPolicy -MakeNicActive vmnic2,vmnic0
+#Create New vSwitch
+New-VirtualSwitch -VMHost $ESXiHost -Name vSwitch1 -Nic vmnic1,vmnic3
+#Add Virtual Machine Port Groups to vSwitch1
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "640_Jumpkick" -VlanID 640
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1837_ESXi" -VlanID 1837
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1838_Monitoring1" -VlanID 1838
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1843_Management2" -VlanID 1843
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1839_Monitoring2" -VlanID 1839
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1840_Outside" -VlanID 1840
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1847_Netbackup1" -VlanID 1847
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1841_DevOps1" -VlanID 1841
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1844_Management3" -VlanID 1844
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1848_Portal1" -VlanID 1848
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1849_Cust1" -VlanID 1849
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1852_Cloud1" -VlanID 1852
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1853_Cloud2" -VlanID 1853
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1845_PPUD1" -VlanID 1845
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1846_PPUD2" -VlanID 1846
+#Get-Vmhost -name $ESXiHost | Get-VirtualSwitch -Name vSwitch1 | New-VirtualPortgroup -Name "1842_Management1" -VlanID 1842 
